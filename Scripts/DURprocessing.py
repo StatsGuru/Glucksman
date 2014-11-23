@@ -20,28 +20,9 @@ import matplotlib.pyplot as plt
 Inputing the data
 """
 
-file = 'https://raw.githubusercontent.com/StatsGuru/Glucksman/2b600409d92339530eef30e7d42995a984625550/NationalDUR2013.TXT'
+file = 'https://raw.githubusercontent.com/StatsGuru/Glucksman/master/NationalDUR2011.TXT'
 df = pd.read_csv(file, sep='|')
 print(df.head())
-
-#%%
-
-df2 = list(df.columns.values)
-print(df2)
-rowtoappend = df[1:2]
-df3=pd.DataFrame(columns = df2)
-df3.append(rowtoappend)
-#%%
-
-df3=pd.DataFrame(columns = df2)
-df3.append(df[1])
-print(df3)
-
-df["ProductCode"]
-#%%
-"""
-Importing the list of NDC codes for Lipitor
-"""
 
 
 #%%
@@ -54,21 +35,18 @@ dfproduct = pd.DataFrame(columns = list(df.columns.values))
 def productcodeexporter(productCode, labelerCode, df):
     dfshort = pd.DataFrame(columns = list(df.columns.values))
     for i in df.index:
-        if (df["ProductCode"][i] == productCode && df["LabelerCode"][i] == labelerCode):
+        if (df["ProductCode"][i] == productCode and df["LabelerCode"][i] == labelerCode):
             rowtoappend = df[i:i+1]
             dfshort = dfshort.append(rowtoappend)
     return dfshort
-    
-dflong = pd.DataFrame(columns = list(df.columns.values))
-dflong = dflong.append(productcodeexporter(1446, 63629, df))
 
-print(dflong.head())
-#%%
-def multiproductexporter(rxlist, df):
+def multiproductexporter(rxlist, labellist, df):
     dflong = pd.DataFrame(columns = list(df.columns.values))
     for i in range(len(rxlist)):
-        dflong = dflong.append(productcodeexporter(rxlist[i], df))
+        dflong = dflong.append(productcodeexporter(rxlist[i], labellist[i], df))
     return dflong
     
-dfproduct = dfproduct.append(multiproductexporter(NDClist['LipitorNDC'], df))
-dfproduct.to_csv('glucksmandatarenameme.csv')
+dfproduct = dfproduct.append(multiproductexporter(NDClist['ProductCode'], NDClist['LabelerCode'], df))
+dfproduct.to_csv('changethenameofthisfile.csv')
+
+
