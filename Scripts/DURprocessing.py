@@ -50,15 +50,20 @@ file = 'https://raw.githubusercontent.com/StatsGuru/Glucksman/master/LipitorNDCs
 NDClist = pd.read_csv(file)
 
 dfproduct = pd.DataFrame(columns = list(df.columns.values))
-
-def productcodeexporter(code, df):
+#%%
+def productcodeexporter(productCode, labelerCode, df):
     dfshort = pd.DataFrame(columns = list(df.columns.values))
     for i in df.index:
-        if df["ProductCode"][i] == code:
+        if (df["ProductCode"][i] == productCode && df["LabelerCode"][i] == labelerCode):
             rowtoappend = df[i:i+1]
             dfshort = dfshort.append(rowtoappend)
     return dfshort
+    
+dflong = pd.DataFrame(columns = list(df.columns.values))
+dflong = dflong.append(productcodeexporter(1446, 63629, df))
 
+print(dflong.head())
+#%%
 def multiproductexporter(rxlist, df):
     dflong = pd.DataFrame(columns = list(df.columns.values))
     for i in range(len(rxlist)):
