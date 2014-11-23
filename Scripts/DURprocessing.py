@@ -39,6 +39,16 @@ print(df3)
 
 df["ProductCode"]
 #%%
+"""
+Importing the list of NDC codes for Lipitor
+"""
+
+
+#%%
+
+file = 'https://raw.githubusercontent.com/StatsGuru/Glucksman/master/LipitorNDCs.csv'
+NDClist = pd.read_csv(file)
+
 dfproduct = pd.DataFrame(columns = list(df.columns.values))
 
 def productcodeexporter(code, df):
@@ -55,4 +65,5 @@ def multiproductexporter(rxlist, df):
         dflong = dflong.append(productcodeexporter(rxlist[i], df))
     return dflong
     
-dfproduct = dfproduct.append(multiproductexporter([5810,5820], df))
+dfproduct = dfproduct.append(multiproductexporter(NDClist['LipitorNDC'], df))
+dfproduct.to_csv('glucksmandatarenameme.csv')
