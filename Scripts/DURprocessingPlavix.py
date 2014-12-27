@@ -10,6 +10,21 @@ Created on Sat Oct 25 20:02:01 2014
 Import the necessary libraries to do the statistical analysis
 """
 
+import zipfile, urllib, csv
+def get_items('http://www.medicaid.gov/Medicaid-CHIP-Program-Information/By-Topics/Benefits/Prescription-Drugs/Downloads/Rx-By-State/AK/AKUTIL13.zip'):
+  zip, headers = urllihttp://www.medicaid.gov/Medicaid-CHIP-Program-Information/By-Topics/Benefits/Prescription-Drugs/Downloads/Rx-By-State/AK/AKUTIL13.zipb.urlretrieve('http://www.medicaid.gov/Medicaid-CHIP-Program-Information/By-Topics/Benefits/Prescription-Drugs/Downloads/Rx-By-State/AK/AKUTIL13.zip')
+  with zipipfile.ZipFile(zip) as http://www.medicaid.gov/Medicaid-CHIP-Program-Information/By-Topics/Benefits/Prescription-Drugs/Downloads/Rx-By-State/AK/AKUTIL13.zipzf:
+    csvfiles = [name for name in zf.namelist()
+                 if name.endswith('.csv')]
+    for filename in csvfiles:
+      with zf.open(filename) as source:
+        reader = csv.DictReader([line.decode('iso-8859-1')
+                                  for line in source])
+        for item in reader:
+          yield item
+  os.unlink(zip)
+
+#%%
 import pandas as pd
 import numpy as np
 import statsmodels.formula.api as sm
@@ -19,17 +34,17 @@ import matplotlib.pyplot as plt
 """
 Inputing the data
 """
-
-#Input national DUR file
-file = 'https://github.com/StatsGuru/Glucksman/blob/master/NationalDUR2011-2013.txt'
+http://www.medicaid.gov/Medicaid-CHIP-Program-Information/By-Topics/Benefits/Prescription-Drugs/Downloads/Rx-By-State/AK/AKUTIL13.zip
+#Input national DUR filehthttp://www.medicaid.gov/Medicaid-CHIP-Program-Information/By-Topics/Benefits/Prescription-Drugs/Downloads/Rx-By-State/AK/AKUTIL13.ziptp://www.medicaid.gov/Medicaid-CHIP-Program-Information/By-Topics/Benefits/Preschttp://www.medicaid.gov/Medicaid-CHIP-Program-Information/By-Topics/Benefits/Prescription-Drugs/Downloads/Rx-By-State/AK/AKUTIL13.zipription-Drugs/Downloads/Rx-By-State/AK/AKUTIL13.zip
+file = 'http://www.medicaid.gov/Medicaid-CHIP-Program-Information/By-Topics/Benefits/Prescription-Drugs/Downloads/Rx-By-State/AK/AKUTIL13.zips/Downloads/Rx-By-State/AK/AKUTIL13.zip'
 df = pd.read_csv(file, sep='|')
 print(df.head())
 
 #input NDC list for Plavix
-file = 'https://raw.githubusercontent.com/StatsGuru/Glucksman/master/PlavixNDCs.csv'
+file = 'https://raw.githubusercontent.com/StatsGuru/Glucksman/master/ZyprexaNDCs.csv'
 NDClist = pd.read_csv(file)
 
-#%%
+#%%df
 """
 Processing the data
 """
@@ -52,6 +67,6 @@ def multiproductexporter(NDClist, df):
 #establish dataframe, process data, and export to csv    
 dfproduct = pd.DataFrame(columns = list(df.columns.values))    
 dfproduct = dfproduct.append(multiproductexporter(NDClist, df))
-dfproduct.to_csv('Plavix2011-2013.csv')
+dfproduct.to_csv('Zyprexa2011-2013.csv')
 
 
